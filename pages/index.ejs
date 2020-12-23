@@ -10,7 +10,13 @@
 <body>
   <h1>Displaying all tasks</h1>
   <ul>
-
+    <% for (let task of tasks) {%>
+      <li>
+        <%= task.title %>
+          <br>
+          <%= task.lastUpdated %>
+      </li>
+      <% } %>
   </ul>
 </body>
 

@@ -5,7 +5,7 @@ const path = require('path');
 // Mongoose connection
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tasksDB', { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-  console.log("Error connecting to Database.");
+  console.log("Connected to Database.");
 }).catch(err => {
   console.log("An error occured while attempting to connect to DB");
   console.log(err);
@@ -45,7 +45,14 @@ app.get('/', (req, res) => {
   res.redirect('/tasks');
 })
 
-app.get('/tasks', (req, res) => {
-  res.render('index');
+app.get('/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find({});
+    res.render('index', { tasks });
+  } catch (error) {
+    console.log('Unable to retrieve tasks');
+    console.log(error);
+    res.render('error', { errorMsg: error });
+  }
 });
 
