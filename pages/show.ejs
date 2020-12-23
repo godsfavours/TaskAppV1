@@ -11,9 +11,10 @@
 
 <body>
   <a href="/tasks">Back</a>
+  <a href="/tasks/<%=task.id %>/edit ">Edit Task</a>
   <h1>
     <%= task.title %>
-      <%= task.priority==='High' ? '!!!' : task.priority==='Medium' ? '!!' : '!' %>
+      <%= task.priority==='High' ? '!!!' : task.priority==='Medium' ? '!!' : task.priority==="Low" ? '!' : '' %>
   </h1>
   <p>
     <%= task.lastUpdated %>

@@ -1,6 +1,18 @@
 const express = require('express');
 const app = express();
+
+app.set('view engine', 'ejs');
 const path = require('path');
+app.set('views', path.join(__dirname, 'pages'));
+
+// parse html
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
+// To use PUT/PATCH/DELETE
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+
 
 // Mongoose connection
 const mongoose = require('mongoose');
@@ -27,16 +39,13 @@ const taskSchema = new mongoose.Schema({
   },
   priority: {
     type: String,
-    enum: ['Low', 'Medium', 'High']
+    enum: ['None', 'Low', 'Medium', 'High']
   }
 })
 
 const Task = mongoose.model('Task', taskSchema);
 
 // Application routes
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'pages'));
-
 app.listen(8080, () => {
   console.log("Listening on port 8080 (localhost:8080)");
 })
@@ -68,3 +77,43 @@ app.get('/tasks/:id', async (req, res) => {
   }
 });
 
+app.post('/tasks', async (req, res) => {
+  const { title, priority } = req.body;
+  console.log(title);
+  // assert that the stuff is good
+  Task.create({ title, priority, lastUpdated: Date.now() },
+    function (err, task) {
+      if (err) {
+        console.log('Cannot add task.');
+        console.log(err);
+        res.render('error', { errorMsg: err });
+      }
+      res.redirect(`tasks/${task.id}`);
+    });
+})
+
+app.get('/tasks/:id/edit', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.findById(id);
+    res.render('edit', { task });
+  } catch (err) {
+    console.log('Cannot load edit page.');
+    console.log(err);
+    res.render('error', { errorMsg: err });
+  }
+})
+
+app.put('/tasks/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, priority, description } = req.body;
+    const task = await Task.findByIdAndUpdate(id,
+      { title, priority, description, lastUpdated: Date.now() });
+    res.redirect(`/tasks/${task.id}`);
+  } catch (err) {
+    console.log('Cannot edit task.');
+    console.log(err);
+    res.render('error', { errorMsg: err });
+  }
+})

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Task</title>
+</head>
+
+<body>
+  <a href="/tasks/<%= task.id %> ">Cancel</a>
+  <form action="/tasks/<%= task.id %>?_method=PUT" method="POST">
+    <input type="text" name="title" id="title" placeholder="Create new task" value="<%= task.title %> ">
+    <label for="priority">Select Priority:</label>
+    <select id="priority" name="priority">
+      <option value="None">None</option>
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <br>
+    <label for="description">Edit Description</label>
+    <br>
+    <textarea name="description" id="description" cols="30" rows="10"><%= task.description %> </textarea>
+    <br>
+    <button>Save</button>
+  </form>
+</body>
+
+</html>
