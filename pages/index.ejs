@@ -6,16 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tasks</title>
 </head>
+<style>
+  ul {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+    margin: 10px;
+  }
+</style>
 
 <body>
   <h1>Displaying all tasks</h1>
   <ul>
     <% for (let task of tasks) {%>
-      <li>
-        <%= task.title %>
-          <br>
-          <%= task.lastUpdated %>
-      </li>
+      <a href="/tasks/<%= task._id %>">
+        <li>
+          <%= task.title %>
+            <br>
+            <%= task.lastUpdated %>
+        </li>
+      </a>
       <% } %>
   </ul>
 </body>

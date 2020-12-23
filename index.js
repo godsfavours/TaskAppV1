@@ -49,10 +49,22 @@ app.get('/tasks', async (req, res) => {
   try {
     const tasks = await Task.find({});
     res.render('index', { tasks });
-  } catch (error) {
+  } catch (err) {
     console.log('Unable to retrieve tasks');
     console.log(error);
     res.render('error', { errorMsg: error });
+  }
+});
+
+app.get('/tasks/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await Task.findById(id);
+    res.render('show', { task });
+  } catch (err) {
+    console.log('Cannot find task.');
+    console.log(err);
+    res.render('error', { errorMsg: err });
   }
 });
 
