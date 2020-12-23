@@ -79,8 +79,9 @@ app.get('/tasks/:id', async (req, res) => {
   }
 });
 
-app.post('/tasks', (req, res) => {
-  let { title, priority } = req.body;
+app.post('/tasks', async (req, res) => {
+  const { title, priority } = req.body;
+  console.log(title);
   // assert that the stuff is good
   Task.create({ title, priority, lastUpdated: Date.now() },
     function (err, task) {
@@ -114,18 +115,6 @@ app.put('/tasks/:id', async (req, res) => {
     res.redirect(`/tasks/${task.id}`);
   } catch (err) {
     console.log('Cannot edit task.');
-    console.log(err);
-    res.render('error', { errorMsg: err });
-  }
-})
-
-app.delete('/tasks/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    await Task.findByIdAndDelete(id);
-    res.redirect('/tasks');
-  } catch (err) {
-    console.log('Cannot delete task.');
     console.log(err);
     res.render('error', { errorMsg: err });
   }

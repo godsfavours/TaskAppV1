@@ -12,7 +12,6 @@
 <body>
   <a href="/tasks">Back</a>
   <a href="/tasks/<%=task.id %>/edit ">Edit Task</a>
-
   <h1>
     <%= task.title %>
       <%= task.priority==='High' ? '!!!' : task.priority==='Medium' ? '!!' : task.priority==="Low" ? '!' : '' %>
@@ -23,9 +22,6 @@
   <p>
     <%= task.description %>
   </p>
-  <form action="/tasks/<%=task.id %>?_method=DELETE" method="POST">
-    <button>Delete Task</button>
-  </form>
 </body>
 
 </html>
